@@ -67,12 +67,16 @@ func (s *Server) removeClient(conn *websocket.Conn) {
 	s.clientsMu.Unlock()
 }
 
+// GetPrice returns the current price (thread-safe)
+func (s *Server) GetPrice() float64 {
+	s.mu.RLock()
+	defer s.mu.RUnlock()
+	return s.currentPrice
+}
+
 // HandlePrice returns the current BTC price
 func (s *Server) HandlePrice(w http.ResponseWriter, r *http.Request) {
-	s.mu.RLock()
-	price := s.currentPrice
-	s.mu.RUnlock()
-
+	price := s.GetPrice()
 	w.Header().Set("Content-Type", "application/json")
 	json.NewEncoder(w).Encode(map[string]float64{"price": price})
 }
@@ -117,4 +121,18 @@ func (s *Server) HandleWebSocket(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 	}
+}
+
+// C++ wrapper functions for TUI access
+
+func GetMovingAverage() float64 {
+	return float64(C.get_moving_average())
+}
+
+func GetHigh() float64 {
+	return float64(C.get_high())
+}
+
+func GetLow() float64 {
+	return float64(C.get_low())
 }

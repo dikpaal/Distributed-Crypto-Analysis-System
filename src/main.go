@@ -2,9 +2,9 @@ package main
 
 import (
 	"fmt"
-	"log"
 	"net/http"
 	"os"
+	"time"
 )
 
 func main() {
@@ -16,7 +16,7 @@ func main() {
 	}
 
 	coinName := GetCoinName(symbol)
-	fmt.Printf("\nStarting Trading Pipeline for %s...\n\n", coinName)
+	fmt.Printf("\nStarting Trading Pipeline for %s...\n", coinName)
 
 	// Create server
 	server := NewServer()
@@ -39,15 +39,18 @@ func main() {
 	http.HandleFunc("/api/stats", server.HandleStats)
 	http.HandleFunc("/ws", server.HandleWebSocket)
 
-	// Start HTTP server
-	log.Printf("Tracking: %s", coinName)
-	log.Println("Server running on http://localhost:8080")
-	log.Println("Endpoints:")
-	log.Printf("  GET  /api/price  - Current %s price", symbol[:len(symbol)-4])
-	log.Println("  GET  /api/stats  - Moving average, high, low")
-	log.Println("  WS   /ws         - Real-time price stream")
+	// Start HTTP server in background
+	go func() {
+		http.ListenAndServe(":8080", nil)
+	}()
 
-	if err := http.ListenAndServe(":8080", nil); err != nil {
-		log.Fatal(err)
+	// Wait for initial data
+	fmt.Println("Connecting to Binance...")
+	time.Sleep(2 * time.Second)
+
+	// Run the dashboard TUI
+	if err := RunDashboard(symbol, server); err != nil {
+		fmt.Printf("Dashboard error: %v\n", err)
+		os.Exit(1)
 	}
 }
