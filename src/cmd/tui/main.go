@@ -120,13 +120,13 @@ type model struct {
 
 func initialModel() model {
 	return model{
-		mode:    dashboardView,
+		mode:    coinSelectView, // Start with coin selection
 		history: make([]float64, 0, 20),
 	}
 }
 
 func (m model) Init() tea.Cmd {
-	return tea.Batch(fetchData(), tick())
+	return fetchCoins() // Fetch coins first
 }
 
 func tick() tea.Cmd {
@@ -298,7 +298,7 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 		m.switching = false
 		m.mode = dashboardView
 		m.history = make([]float64, 0, 20)
-		return m, fetchData()
+		return m, tea.Batch(fetchData(), tick())
 	}
 
 	return m, nil

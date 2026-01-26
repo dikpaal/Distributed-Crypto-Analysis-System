@@ -3,10 +3,8 @@ package main
 import (
 	"encoding/json"
 	"flag"
-	"fmt"
 	"log"
 	"net/http"
-	"os"
 	"sync"
 )
 
@@ -36,24 +34,38 @@ func (a *AppState) SetSymbol(symbol, name string) {
 	a.mu.Unlock()
 }
 
-func main() {
-	// Parse command line flags
-	symbol := flag.String("symbol", "", "Trading pair symbol (e.g., btcusdt)")
-	flag.Parse()
+// Available coins
+var coins = []struct {
+	symbol string
+	name   string
+}{
+	{"btcusdt", "Bitcoin (BTC)"},
+	{"ethusdt", "Ethereum (ETH)"},
+	{"solusdt", "Solana (SOL)"},
+	{"bnbusdt", "Binance Coin (BNB)"},
+	{"xrpusdt", "Ripple (XRP)"},
+	{"dogeusdt", "Dogecoin (DOGE)"},
+}
 
-	// If no symbol provided, run TUI to select
-	selectedSymbol := *symbol
-	if selectedSymbol == "" {
-		var err error
-		selectedSymbol, err = RunTUI()
-		if err != nil {
-			fmt.Println("Cancelled.")
-			os.Exit(0)
+// GetCoinName returns the display name for a symbol
+func GetCoinName(symbol string) string {
+	for _, coin := range coins {
+		if coin.symbol == symbol {
+			return coin.name
 		}
 	}
+	return symbol
+}
 
+func main() {
+	// Parse command line flags
+	symbol := flag.String("symbol", "btcusdt", "Trading pair symbol (e.g., btcusdt)")
+	flag.Parse()
+
+	selectedSymbol := *symbol
 	coinName := GetCoinName(selectedSymbol)
-	fmt.Printf("\nStarting Trading Pipeline Server for %s...\n\n", coinName)
+
+	log.Printf("Starting Trading Pipeline Server for %s...\n", coinName)
 
 	// App state
 	appState := &AppState{
