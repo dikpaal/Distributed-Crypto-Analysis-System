@@ -1,6 +1,6 @@
-# Distributed Real-Time Crypto Data Pipeline
+# Distributed Crypto Analysis System
 
-A distributed, event-driven data pipeline that streams real-time cryptocurrency market data from Binance, processes it through a C++ signal processing module, persists to TimescaleDB, and serves it via HTTP/WebSocket with a terminal-based dashboard.
+A distributed, event-driven architecture that streams real-time cryptocurrency market data from Binance, processes it through a C++ signal processing module, persists to TimescaleDB, and serves it via HTTP/WebSocket with a terminal-based dashboard.
 
 ## Features
 
