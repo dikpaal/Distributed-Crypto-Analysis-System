@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Distributed Crypto Analysis System</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Monaco', 'Courier New', monospace;
+            background: #0a0a0a;
+            color: #e0e0e0;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            text-align: center;
+        }
+
+        .message {
+            font-size: 18px;
+            color: #a0a0a0;
+            margin-bottom: 30px;
+            line-height: 1.6;
+        }
+
+        .message span {
+            color: #ffd700;
+        }
+
+        .demo-container {
+            background: #1a1a1a;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+            display: inline-block;
+        }
+
+        .demo-gif {
+            max-width: 100%;
+            height: auto;
+            border-radius: 8px;
+            display: block;
+        }
+
+        .footer {
+            margin-top: 40px;
+            font-size: 14px;
+            color: #666;
+        }
+
+        .footer a {
+            color: #888;
+            text-decoration: none;
+            border-bottom: 1px solid #444;
+            transition: color 0.3s;
+        }
+
+        .footer a:hover {
+            color: #ffd700;
+            border-bottom-color: #ffd700;
+        }
+
+        @media (max-width: 768px) {
+            .message {
+                font-size: 16px;
+            }
+
+            .demo-container {
+                padding: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <p class="message">
+            This is a terminal-based project <span>:)</span><br>
+            Here's a demo video showing it in action
+        </p>
+
+        <div class="demo-container">
+            <img src="public/demoX.gif" alt="Trading Pipeline Demo" class="demo-gif">
+        </div>
+
+        <div class="footer">
+            <p>Real-time cryptocurrency trading pipeline built with Go, C++, NATS & TimescaleDB</p>
+            <p style="margin-top: 10px;">
+                <a href="https://github.com/dikpaal/Distributed-Crypto-Analysis-System" target="_blank">View on GitHub</a>
+            </p>
+        </div>
+    </div>
+</body>
+</html>
